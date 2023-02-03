@@ -16,12 +16,16 @@ namespace WebApi_Test.Repository
 
         public async Task<OrderModel> GetOrderById(int id)
         {
-            return await _dbContext.Orders.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Orders
+                .Include(x => x.Client)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<OrderModel>> ListAllOrders()
         {
-            return await _dbContext.Orders.ToListAsync();
+            return await _dbContext.Orders
+                .Include(x => x.Client)
+                .ToListAsync();
         }
 
         public async Task<OrderModel> AddOrder(OrderModel order)
